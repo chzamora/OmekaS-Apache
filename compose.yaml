@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Core Omeka S:
+  omekas:
+    build: .
+    restart: always
+    expose:
+      - "80"
+    networks:
+      - nginx-proxymanager_default
+    volumes:
+      - omeka_data:/var/www/html
+      
+  # Servicio IIIF:
+  cantaloupe:
+    image: islandora/cantaloupe:renovate.apk-packages
+    restart: always
+    networks:
+      - nginx-proxymanager_default
+    volumes:
+      - /docker/Omeka-IIIF/images:/images
+
+volumes:
+  omeka_data:
+    
+networks:
+  nginx-proxymanager_default:
+    external: true
